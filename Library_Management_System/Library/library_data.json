@@ -1,1 +1,9 @@
-[]
+[
+    {
+        "isbn": 1234567890123,
+        "title": "Automic Habits",
+        "author": "James Clear",
+        "publication_year": 2018,
+        "available": true
+    }
+]
