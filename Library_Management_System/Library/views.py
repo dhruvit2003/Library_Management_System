@@ -41,3 +41,25 @@ class AddBook(APIView):
         data.append(new_book)
         write_data(data)
         return Response(data, status=status.HTTP_201_CREATED)
+
+class BorrowBook(APIView):
+    def patch(self, request, pk):
+        data = read_data()
+
+        #validation to check the ISBN is an integer
+        try:
+            isbn = int(pk)
+        except ValueError:
+            return Response({"error": "ISBN must be an integer."}, status=status.HTTP_400_BAD_REQUEST)
+
+        book = next((book for book in data if book['isbn'] == isbn), None)
+
+        if book is None:
+            return Response({"error": "Book not found."}, status=status.HTTP_400_BAD_REQUEST)
+
+        if not book['available']:
+            return Response({"error": "Book is currently unavailable."}, status=status.HTTP_400_BAD_REQUEST)
+
+        book['available'] = False 
+        write_data(data)
+        return Response(book, status=status.HTTP_200_OK)

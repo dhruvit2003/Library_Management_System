@@ -87,7 +87,7 @@ class TestLibrary(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_borrow_available_book(self):
-        url = reverse('borrow-book', args=[1234567890123])
+        url = reverse('borrow_book', args=[1234567890123])
         data = [
             {
                 'isbn': 1234567890123,
@@ -103,7 +103,7 @@ class TestLibrary(APITestCase):
         self.assertFalse(response.data['available'])
 
     def test_borrow_unavailable_book(self):
-        url = reverse('borrow-book', args=[1234567890123])
+        url = reverse('borrow_book', args=[1234567890123])
         data = [
             {
                 'isbn': 1234567890123,
@@ -119,13 +119,13 @@ class TestLibrary(APITestCase):
         self.assertIn("error", response.data)
 
     def test_borrow_nonexistent_book(self):
-        url = reverse('borrow-book', args=[1234567890123])
+        url = reverse('borrow_book', args=[1234567890123])
         response = self.client.patch(url, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn("error", response.data)
 
     def test_borrow_invalid_ISNB_type(self):
-        url = reverse('borrow-book', args=['1234567890123'])
+        url = reverse('borrow_book', args=['1234567890123'])
         response = self.client.patch(url, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn("error", response.data)
