@@ -4,6 +4,13 @@
         "title": "Automic Habits",
         "author": "James Clear",
         "publication_year": 2018,
-        "available": true
+        "available": false
+    },
+    {
+        "isbn": 9876543210123,
+        "title": "Pride and Prejudice",
+        "author": "Jane Austen",
+        "publication_year": 1813,
+        "available": false
     }
 ]

@@ -84,3 +84,11 @@ class ReturnBook(APIView):
         book['available'] = True
         write_data(data)
         return Response(book, status=status.HTTP_200_OK)
+    
+class ViewAvailableBooks(APIView):
+    def get(self, request):
+        data = read_data()
+        
+        available_books = [book for book in data if book['available']]
+        
+        return Response(available_books, status=status.HTTP_200_OK)
