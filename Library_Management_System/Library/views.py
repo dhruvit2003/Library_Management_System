@@ -63,3 +63,24 @@ class BorrowBook(APIView):
         book['available'] = False 
         write_data(data)
         return Response(book, status=status.HTTP_200_OK)
+
+class ReturnBook(APIView):
+    def patch(self, request, pk):
+        data = read_data()
+
+        try:
+            isbn = int(pk)
+        except ValueError:
+            return Response({"error": "ISBN must be an integer."}, status=status.HTTP_400_BAD_REQUEST)
+
+        book = next((book for book in data if book['isbn'] == isbn), None)
+
+        if book is None:
+            return Response({"error": "Book not found."}, status=status.HTTP_400_BAD_REQUEST)
+
+        if book['available']:
+            return Response({"error": "Book is already available."}, status=status.HTTP_400_BAD_REQUEST)
+
+        book['available'] = True
+        write_data(data)
+        return Response(book, status=status.HTTP_200_OK)
