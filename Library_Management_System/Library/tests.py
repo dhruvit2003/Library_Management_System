@@ -176,3 +176,58 @@ class TestLibrary(APITestCase):
         response = self.client.patch(url, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn("error", response.data)
+
+    #view_books tests
+    def test_view_available_books(self):
+        url = reverse('available_books')
+        data = [
+            {
+                 'isbn': 1234567890123,
+                'title': 'Automic Habits',
+                'author': 'James Clear',
+                'publication_year': 2018,
+                'available': True
+            },
+            {
+                'isbn': 9876543210123,
+                'title': 'Pride and Prejudice',
+                'author': 'Jane Austen',
+                'publication_year': 1813,
+                'available': False
+            }
+        ]
+        write_data(data)
+        response = self.client.get(url, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 1)
+        self.assertEqual(response.data[0]['isbn'], 1234567890123)
+
+    def test_view_no_available_books(self):
+        url = reverse('available_books')
+        data = [
+            {
+                'isbn': 1234567890123,
+                'title': 'Automic Habits',
+                'author': 'James Clear',
+                'publication_year': 2018,
+                'available': False
+            },
+            {
+                'isbn': 9876543210123,
+                'title': 'Pride and Prejudice',
+                'author': 'Jane Austen',
+                'publication_year': 1813,
+                'available': False
+            }
+        ]
+        write_data(data)
+        response = self.client.get(url, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 0)  
+
+    def test_view_books_in_empty_library(self):
+        url = reverse('available_books')
+        
+        response = self.client.get(url, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 0) 
