@@ -31,3 +31,7 @@ This is a simple Library Management System built using Django Rest Framwork. It'
 
 To run all the tests, use the following command:
 - python manage.py test
+
+To generate the test report, use the following command:
+- pytest --html=reports/test_report.html --self-contained-html
+ 
